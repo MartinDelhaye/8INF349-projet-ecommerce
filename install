@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export DATABASE_PATH="app/db.sqlite"
+
+echo "Installation database..."
+python -m database.bootstrap
+
+echo "Installation terminée."
