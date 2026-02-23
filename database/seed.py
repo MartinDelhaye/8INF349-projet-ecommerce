@@ -1,4 +1,4 @@
-from app.models import db, Account, Transaction
+from app.models import db, Product
 from peewee import IntegrityError
 import datetime
 
@@ -6,19 +6,32 @@ import datetime
 def clear_database():
     db.connect()
     db.atomic()
-    Account.delete().execute()
+    Product.delete().execute()
     print("Base de données vidée.")
 
 
-def seed_accounts():
-    accounts = [
-        {"owner": "Alztztice", "current_balance": 1000},
-        {"owner": "Bob", "current_balance": 500},
-        {"owner": "Charlie", "current_balance": 750},
+def seed_products():
+    products = [
+        {
+            "name" : "Brown eggs",
+            "id" : 1,
+            "in_stock" : True,
+            "description" : "Raw organic brown eggs in a basket",
+            "price" : 28.1, "weight": 400, "image": "0.jpg"
+            },
+        { 
+         "description": "Sweet fresh stawberry on the wooden table",
+         "image": "1.jpg",
+         "in_stock" : True,
+         "weight": 299,
+         "id" : 2,
+         "name" : "Sweet fresh stawberry",
+         "price" : 29.45
+         }
     ]
-    for data in accounts:
-        Account.create(**data)
-    print("Comptes créés.")
+    for data in products:
+        Product.create(**data)
+    print("Produits créés.")
 
 
 def main():
@@ -27,7 +40,7 @@ def main():
     try:
         clear_database()
         with db.atomic():
-            seed_accounts()
+            seed_products()
         print("Seeding terminé avec succès.")
 
     except IntegrityError as e:

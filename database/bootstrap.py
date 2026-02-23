@@ -1,16 +1,17 @@
 from pathlib import Path
-from app.models import db, Account, Transaction
+from app.models import db, Product
 import os
 
 def suppr_db():
     db_path = Path(db.database)
+    print(f"Chemin de la base de données : {db_path}")
     if db_path.exists():
         os.remove(db_path)
         print(f"Suppression de l'ancienne base de données : {db_path}")
     
 def create_tables():
     db.connect()
-    db.create_tables([Account, Transaction])
+    db.create_tables([Product])
     db.close()
     print("Tables créées avec succès.")
 

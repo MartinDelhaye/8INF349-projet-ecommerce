@@ -1,5 +1,4 @@
 import os
-import datetime
 import peewee as p
 
 DATABASE_PATH = os.getenv("DATABASE_PATH", "app/db.sqlite")
@@ -11,19 +10,15 @@ class BaseModel(p.Model):
         database = db
 
 
-class Account(BaseModel):
+class Product(BaseModel):
     id = p.AutoField(primary_key=True)
-    owner = p.CharField(unique=True, null=False)
-    current_balance = p.IntegerField(default=0, constraints=[
-        p.Check('current_balance >= 0')
+    name = p.CharField(unique=True, null=False)
+    in_stock = p.BooleanField(null=False)
+    description = p.TextField(null=True)
+    price = p.IntegerField(null=False, constraints=[
+        p.Check('price >= 0')
     ])
-
-
-class Transaction(BaseModel):
-    id = p.AutoField(primary_key=True)
-    from_account = p.ForeignKeyField(Account, backref="transactions_from", null=False)
-    to_account = p.ForeignKeyField(Account, backref="transactions_to", null=False)
-    timestamp = p.DateTimeField(default=datetime.datetime.now)
-    amount = p.IntegerField(constraints=[
-        p.Check('amount > 0')
+    weight = p.IntegerField(null=False, constraints=[
+        p.Check('weight >= 0')
     ])
+    image = p.CharField(null=True)
